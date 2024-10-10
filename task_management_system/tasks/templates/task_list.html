@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách công việc</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .task-actions {
+            margin-top: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        .btn-create {
+            background-color: #28a745;
+        }
+        .btn-create:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Danh sách công việc</h1>
+    <ul>
+        {% for task in tasks %}
+            <li>
+                {{ task.title }} - {{ task.description }}
+                {% if task.remaining_days is not None %}
+                    <p>Còn lại: {{ task.remaining_days }} ngày</p>
+                {% else %}
+                    <p>Không có deadline</p>
+                {% endif %}
+                <div class="task-actions">
+                    <a href="{% url 'tasks:edit_task' task.key %}">
+                        <button>Chỉnh sửa</button>
+                    </a>
+                    <form method="POST" action="{% url 'tasks:delete_task' task.key %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="btn-delete" type="submit" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');">Xóa</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    <a href="{% url 'tasks:create_task' %}">
+        <button class="btn-create">Tạo công việc mới</button>
+    </a>
+    <br>
+    <a href="{% url 'tasks:logout' %}">
+        <button>Đăng xuất</button>
+    </a>
+</body>
+</html>
