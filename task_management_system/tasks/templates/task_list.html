@@ -60,6 +60,7 @@
     <ul>
         {% for task in tasks %}
             <li>
+                <input type="checkbox" {% if task.completed %}checked{% endif %}> <!-- Trạng thái hoàn thành -->
                 {{ task.title }} - {{ task.description }}
                 {% if task.remaining_days is not None %}
                     <p>Còn lại: {{ task.remaining_days }} ngày</p>

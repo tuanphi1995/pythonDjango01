@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Hàm lưu hoặc cập nhật dữ liệu vào Firebase Realtime Database
 def save_or_update_task_in_firebase(task_key, task_data):
-    ref = db.reference(f'tasks/{task_key}')  
+    ref = db.reference(f'tasks/{task_key}') if task_key else db.reference('tasks').push()
     ref.set(task_data)
 
 # Hàm lấy dữ liệu từ Firebase Realtime Database
